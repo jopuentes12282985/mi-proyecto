@@ -1,0 +1,41 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Random;
+
+public class Main {
+    public static void main(String[] args) {
+        try {
+            generateFiles();
+            System.out.println("Archivos generados exitosamente.");
+
+            processFiles();
+            System.out.println("Procesamiento de archivos exitoso.");
+        } catch (IOException e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+    }
+
+    private static void generateFiles() throws IOException {
+        Random random = new Random();
+        BufferedWriter writer = new BufferedWriter(new FileWriter("archivo1.txt"));
+        for (int i = 0; i < 10; i++) {
+            writer.write(String.valueOf(random.nextInt(100)));
+            writer.newLine();
+        }
+        writer.close();
+        // Generar otros archivos si es necesario
+    }
+
+    private static void processFiles() throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader("archivo1.txt"));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            // Realizar el procesamiento de cada línea según los requisitos
+        }
+        reader.close();
+        // Procesar otros archivos si es necesario
+    }
+}
