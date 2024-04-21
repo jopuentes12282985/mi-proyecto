@@ -1,0 +1,38 @@
+import java.io.*;
+
+public class Main {
+    public static void main(String[] args) {
+        try {
+            // Generar archivos de datos
+            generateDataFiles();
+            System.out.println("Archivos de datos generados exitosamente.");
+
+            // Procesar archivos de datos
+            processDataFiles();
+            System.out.println("Procesamiento de archivos exitoso.");
+
+            System.out.println("Todas las tareas completadas exitosamente.");
+        } catch (IOException e) {
+            System.err.println("Error: " + e.getMessage());
+        }
+    }
+
+    private static void generateDataFiles() throws IOException {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("archivo1.txt"))) {
+            // Simplemente crear el archivo, no necesitamos escribir datos en este caso
+        }
+    }
+
+    private static void processDataFiles() throws IOException {
+        try (BufferedReader reader = new BufferedReader(new FileReader("archivo1.txt"));
+             BufferedWriter writer = new BufferedWriter(new FileWriter("reporte.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                // Procesar cada línea según los requisitos
+                // Aquí solo vamos a copiar las líneas directamente
+                writer.write(line);
+                writer.newLine();
+            }
+        }
+    }
+}
