@@ -1,38 +1,60 @@
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
         try {
-            // Generar archivos de datos
-            generateDataFiles();
-            System.out.println("Archivos de datos generados exitosamente.");
+            // Simulamos datos de vendedores y productos vendidos
+            Map<String, Double> ventasVendedores = new HashMap<>();
+            ventasVendedores.put("Juan", 1500.0);
+            ventasVendedores.put("Maria", 2000.0);
+            ventasVendedores.put("Pedro", 1000.0);
 
-            // Procesar archivos de datos
-            processDataFiles();
-            System.out.println("Procesamiento de archivos exitoso.");
+            Map<String, Integer> ventasProductos = new HashMap<>();
+            ventasProductos.put("Producto A", 10);
+            ventasProductos.put("Producto B", 20);
+            ventasProductos.put("Producto C", 15);
 
-            System.out.println("Todas las tareas completadas exitosamente.");
+            // Crear archivo de reporte de vendedores
+            createSalesReport("reporte_vendedores.csv", ventasVendedores);
+
+            // Crear archivo de reporte de productos
+            createProductReport("reporte_productos.csv", ventasProductos);
+
+            System.out.println("Archivos generados exitosamente.");
         } catch (IOException e) {
-            System.err.println("Error: " + e.getMessage());
+            System.err.println("Error al generar archivos: " + e.getMessage());
         }
     }
 
-    private static void generateDataFiles() throws IOException {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("archivo1.txt"))) {
-            // Simplemente crear el archivo, no necesitamos escribir datos en este caso
+    private static void createSalesReport(String fileName, Map<String, Double> ventasVendedores) throws IOException {
+        // Ordenar vendedores por cantidad de ventas (de mayor a menor)
+        List<Map.Entry<String, Double>> sortedVendedores = new ArrayList<>(ventasVendedores.entrySet());
+        sortedVendedores.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
+
+        // Escribir el reporte de vendedores en el archivo CSV
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            for (Map.Entry<String, Double> entry : sortedVendedores) {
+                writer.write(entry.getKey() + ";" + entry.getValue());
+                writer.newLine();
+            }
         }
     }
 
-    private static void processDataFiles() throws IOException {
-        try (BufferedReader reader = new BufferedReader(new FileReader("archivo1.txt"));
-             BufferedWriter writer = new BufferedWriter(new FileWriter("reporte.txt"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                // Procesar cada línea según los requisitos
-                // Aquí solo vamos a copiar las líneas directamente
-                writer.write(line);
+    private static void createProductReport(String fileName, Map<String, Integer> ventasProductos) throws IOException {
+        // Ordenar productos por cantidad de ventas (de mayor a menor)
+        List<Map.Entry<String, Integer>> sortedProductos = new ArrayList<>(ventasProductos.entrySet());
+        sortedProductos.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
+
+        // Escribir el reporte de productos en el archivo CSV
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            for (Map.Entry<String, Integer> entry : sortedProductos) {
+                writer.write(entry.getKey() + ";" + entry.getValue());
                 writer.newLine();
             }
         }
     }
 }
+
